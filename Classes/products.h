@@ -1,14 +1,42 @@
-//
-// Created by pedro on 17/11/2020.
-//
 
 #ifndef PROJETO_AEDA_PRODUCTS_H
 #define PROJETO_AEDA_PRODUCTS_H
 
+#include <string>
+#include <vector>
+using namespace std;
 
-class products {
-
+class Product {
+    string type;
+    int price, quality;
+public:
+    Product(string t, int p, int q);
+    string getType() const;
+    int getPrice() const;
+    int getQuality() const;
 };
 
+class ProductDoesNotExist {
+public:
+    ProductDoesNotExist() {};
+};
+
+class Provider {
+    string name;
+    vector<Product *> products;
+public:
+    Provider(string n);
+    string getName() const;
+    vector<Product *> getProducts();
+    void addProduct(Product *p);
+    void removeProduct(Product *p);
+};
+
+class ProviderDoesNotExist {
+    string name;
+public:
+    ProviderDoesNotExist(string n) {name = n;}
+    string getName() {return name;}
+};
 
 #endif //PROJETO_AEDA_PRODUCTS_H

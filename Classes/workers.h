@@ -1,6 +1,3 @@
-//
-// Created by pedro on 17/11/2020.
-//
 
 #ifndef PROJETO_AEDA_WORKERS_H
 #define PROJETO_AEDA_WORKERS_H
@@ -15,6 +12,7 @@ protected:
 public:
     Worker(string n, int N, int w, int y);
     virtual ~Worker(){};
+    string getName() const;
     int getNIF() const;
     int getWage() const;
     int getYears() const;
@@ -54,11 +52,13 @@ public:
     int getEvaluation() const;
     void info() const;
     void info(ostream &o) const;
-    /*
-    -pesquisar funcionarios por cargo e salario
-    -filtrar reservas feitas por clientes novos
-    -custos e lucro total de funcionamento do hotel
-    */
+};
+
+class WorkerDoesNotExist {
+    string name;
+public:
+    WorkerDoesNotExist(string n) {name = n;}
+    string getName() {return name;}
 };
 
 #endif //PROJETO_AEDA_WORKERS_H
