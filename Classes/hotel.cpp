@@ -3,3 +3,7 @@
 //
 
 #include "hotel.h"
+
+vector<Worker *> hotel::getWorkers() {
+    return workers;
+}
