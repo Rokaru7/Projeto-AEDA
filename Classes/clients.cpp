@@ -27,6 +27,10 @@ int Clients::getRoomNumber() const
 int Clients::getReservation() const
 { return reservations; }
 
+void Clients::info(ostream &o) const {
+    o << "Name: " << name << "  NIF: " << NIF << "  Number of previous reservations: " << history ;
+    o << "Number of rooms wanted: " << reservations << "  Number of the selected rooms: " << room;
+}
 
 /*if reservations<= //lugares disponiveis
     lugares disponiveis - reservations*/

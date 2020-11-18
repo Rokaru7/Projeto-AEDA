@@ -15,6 +15,8 @@ public:
     int getHistory() const;
     int getReservation() const;
     int getRoomNumber() const;
+    virtual void info() const;
+    virtual void info(ostream &o) const;
 };
 
 

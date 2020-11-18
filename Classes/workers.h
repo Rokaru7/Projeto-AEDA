@@ -17,8 +17,7 @@ public:
     int getNIF() const;
     int getWage() const;
     int getYears() const;
-    virtual void info() const;
-    virtual void info(ostream &o) const;
+
 };
 
 class Reception: public Worker {
