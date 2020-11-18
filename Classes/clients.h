@@ -9,12 +9,14 @@ protected:
     int NIF;
     int history;
     int reservations;
+    int room;
 public:
-    Clients(string n, int N, int h, int r);
+    Clients(string n, int N, int h, int r, int R);
     int getNIF() const ;
     string getName() const;
     int getHistory() const ;
     int getReservation() const;
+    int getRoomNumber() const;
 };
 
 
