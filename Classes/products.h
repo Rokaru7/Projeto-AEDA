@@ -14,6 +14,7 @@ public:
     string getType() const;
     int getPrice() const;
     int getQuality() const;
+    void info() const;
 };
 
 class ProductDoesNotExist {
@@ -29,7 +30,8 @@ public:
     string getName() const;
     vector<Product *> getProducts();
     void addProduct(Product *p);
-    void removeProduct(Product *p);
+    void removeProduct(int pos);
+    int getProductpos(string n);
 };
 
 class ProviderDoesNotExist {

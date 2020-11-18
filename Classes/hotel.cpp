@@ -3,6 +3,7 @@
 #include "hotel.h"
 
 void hotel::addWorker(Worker *w) {
+    totalworkers += w->getWage();
     workers.push_back(w);
 }
 
@@ -10,33 +11,19 @@ vector<Worker *> hotel::getWorkers() {
     return workers;
 }
 
-void hotel::removeWorker(string n) {
-    for (vector<Worker *>::iterator it = workers.begin(); it != workers.end(); it++){
-        if ((*it)->getName() == n) {
-            workers.erase(it);
-            break;
-        }
-    }
-    throw WorkerDoesNotExist(n);
+void hotel::removeWorker(int pos) {
+    totalworkers -= workers[pos]->getWage();
+    workers.erase(workers.begin() + pos);
 }
 
-void hotel::addProvider(Provider p) {
+void hotel::addProvider(Provider *p) {
     providers.push_back(p);
 }
 
-void hotel::removeProvider(string n) {
-    for (vector<Provider>::iterator it = providers.begin(); it != providers.end(); it++){
-        if (it->getName() == n) {
-            providers.erase(it);
-            break;
-        }
-    }
-    throw ProviderDoesNotExist(n);
+void hotel::removeProvider(int pos) {
+    providers.erase(providers.begin() + pos);
 }
 
-int hotel::getProductsprice() const {
-    return totalproducts;
-}
 
 void hotel::buyProduct(Product *p) {
     boughtproducts.push_back(p);
@@ -110,10 +97,12 @@ void hotel::chooseProducts(string type) {
     bool lower, found;
     int pos;
     for(int i = 0; i != providers.size(); i++){
-        for(int j = 0; j != providers[i].getProducts().size(); j++){
-            if (providers[i].getProducts()[j]->getType() == type){
+        for(int j = 0; j != providers[i]->getProducts().size(); j++){
+            if (providers[i]->getProducts()[j]->getType() == type){
                 if (boughtproducts.empty()){
-                    buyProduct(providers[i].getProducts()[j]);
+                    cout << "Buying: " << providers[i]->getName() << "  ";
+                    providers[i]->getProducts()[j]->info();
+                    buyProduct(providers[i]->getProducts()[j]);
                 }
                 else {
                     lower = false;
@@ -121,7 +110,7 @@ void hotel::chooseProducts(string type) {
                     for(int k = 0; k != boughtproducts.size(); k++){
                         if(boughtproducts[k]->getType() == type){
                             found = true;
-                            if(providers[i].getProducts()[j]->getPrice() < boughtproducts[k]->getPrice()){
+                            if(providers[i]->getProducts()[j]->getPrice() < boughtproducts[k]->getPrice()){
                                 lower = true;
                                 pos = k;
                             }
@@ -130,10 +119,14 @@ void hotel::chooseProducts(string type) {
                     }
                     if (lower){
                         removeProduct(pos);
-                        buyProduct(providers[i].getProducts()[j]);
+                        cout << "Buying: " << providers[i]->getName() << "  ";
+                        providers[i]->getProducts()[j]->info();
+                        buyProduct(providers[i]->getProducts()[j]);
                     }
                     else if (!found){
-                        buyProduct(providers[i].getProducts()[j]);
+                        cout << "Buying: " << providers[i]->getName() << "  ";
+                        providers[i]->getProducts()[j]->info();
+                        buyProduct(providers[i]->getProducts()[j]);
                     }
                 }
             }
@@ -141,4 +134,57 @@ void hotel::chooseProducts(string type) {
     }
 }
 
+int hotel::getWorkerpos(string name) const {
+    for(int i = 0; i != workers.size(); i++){
+        if(workers[i]->getName() == name){
+            return i;
+        }
+    }
+    throw WorkerDoesNotExist(name);
+}
 
+int hotel::getTotalProducts() const {
+    return totalproducts;
+}
+
+int hotel::getTotalWorkers() const {
+    return totalworkers;
+}
+
+int hotel::getIncome() const {
+    return income;
+}
+
+int hotel::getProviderpos(string name) const {
+    for(int i = 0; i != providers.size(); i++){
+        if(providers[i]->getName() == name){
+            return i;
+        }
+    }
+    throw ProviderDoesNotExist(name);
+}
+
+void hotel::listProviders() {
+    if (providers.empty()) cout << "No providers" << endl;
+    else{
+        for(vector<Provider *>::iterator it = providers.begin(); it != providers.end(); it++){
+            cout << (*it)->getName() << endl;
+        }
+    }
+}
+
+vector<Provider *> hotel::getProviders() {
+    return providers;
+}
+
+void hotel::listProducts() {
+    if (providers.empty()) cout << "No providers" << endl;
+    else{
+        for(int i = 0; i != providers.size(); i++){
+            for(int j = 0; j != providers[i]->getProducts().size(); j++){
+                cout << providers[i]->getName() << "    ";
+                providers[i]->getProducts()[j]->info();
+            }
+        }
+    }
+}

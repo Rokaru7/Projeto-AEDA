@@ -5,20 +5,29 @@
 #include <vector>
 #include "workers.h"
 #include "products.h"
+#include "clients.h"
+#include "rooms.h"
 using namespace std;
 
 class hotel {
     vector<Worker *> workers;
-    vector<Provider> providers;
+    vector<Provider *> providers;
     vector<Product *> boughtproducts;
+    vector<Clients *> clients;
     int totalproducts = 0;
+    int totalworkers = 0;
+    int income = 0;
 public:
     void addWorker(Worker *w);
-    void removeWorker(string n);
+    void removeWorker(int pos);
     vector<Worker *> getWorkers();
-    void addProvider(Provider p);
-    void removeProvider(string n);
-    int getProductsprice() const;
+    int getWorkerpos(string name) const;
+    void addProvider(Provider *p);
+    void removeProvider(int pos);
+    int getProviderpos(string name) const;
+    void listProviders();
+    void listProducts();
+    vector<Provider *> getProviders();
     void buyProduct(Product *p);
     void removeProduct(int pos);
     void chooseProducts(string type);
@@ -26,6 +35,13 @@ public:
     void searchbyWage(int w);
     void sortbyRole();
     void sortbyWage();
+    void addClient();
+    void removeClient();
+    void sortClients();
+    int getTotalProducts() const;
+    int getTotalWorkers() const;
+    int getIncome() const;
+
 
     /*
     -pesquisar funcionarios por cargo e salario

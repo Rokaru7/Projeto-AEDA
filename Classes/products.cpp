@@ -1,5 +1,6 @@
 
 #include "products.h"
+#include <iostream>
 
 Product::Product(string t, int p, int q) {
     type = t; price = p; quality = q;
@@ -17,6 +18,10 @@ int Product::getQuality() const {
     return quality;
 }
 
+void Product::info() const {
+    cout << "Type: " << type << "    Price: " << price << "    Quality:" << quality << endl;
+}
+
 vector<Product *> Provider::getProducts() {
     return products;
 }
@@ -25,14 +30,8 @@ void Provider::addProduct(Product *p) {
     products.push_back(p);
 }
 
-void Provider::removeProduct(Product *p) {
-    for (vector<Product *>::iterator it = products.begin(); it != products.end(); it++){
-        if ((*it) == p) {
-            products.erase(it);
-            break;
-        }
-    }
-    throw ProductDoesNotExist();
+void Provider::removeProduct(int pos) {
+    products.erase(products.begin() + pos);
 }
 
 Provider::Provider(string n) {
@@ -41,4 +40,13 @@ Provider::Provider(string n) {
 
 string Provider::getName() const {
     return name;
+}
+
+int Provider::getProductpos(string n) {
+    for(int i = 0; i != products.size(); i++){
+        if(products[i]->getType() == name){
+            return i;
+        }
+    }
+    throw ProductDoesNotExist();
 }
