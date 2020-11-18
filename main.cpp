@@ -5,15 +5,45 @@
 int main() {
     hotel h;
     string name, shift;
-    int NIF, wage, years, floor, evaluation, price, quality;
+    int NIF, wage, years, floor, evaluation, price, quality, guests;
 
     while(true){
         int input;
+        string input_str;
         cout << "1 - Client    2 - Room    3 - Worker    4 - Manager    0 - Close" << endl;
         cin >> input;
         if (input == 0) break;
-        else if (input == 1){}
-        else if (input == 2){}
+        else if (input == 1){
+            while(true){
+                cout << "1 - Add Client    2 - Remove Client    3 - List of Clients    0 - Go back" << endl;
+                cin >> input;
+                if (input == 0) break;
+                else if (input == 1){
+                    cout << "Name    NIF    Number of guests" << endl;
+                    cin >> name >> NIF >> guests;
+                    Clients *c = new Clients(name, NIF, 0, guests, 0);
+                    h.addClient(c);
+                }
+                else if (input == 2){
+                    cout << "Name: " << endl;
+                    cin >> name;
+                    int pos = h.getClientspos(name);
+                    cout << "Are you sure u want to remove (yes or no) :" << endl;
+                    h.getClients()[pos]->info();
+                    cin >> input_str;
+                    if (input_str == "yes") h.removeClient(pos);
+                }
+                else if (input == 3){
+                    h.listClients();
+                }
+                else cout << "Invalid input" << endl;
+            }
+        }
+        else if (input == 2){
+
+
+
+        }
         else if (input == 3){
             while(true){
                 cout << "1 - Add Worker    2 - Remove Worker    0 - Go back" << endl;
@@ -57,7 +87,6 @@ int main() {
                     int pos = h.getWorkerpos(name);
                     cout << "Are you sure u want to remove (yes or no) :" << endl;
                     h.getWorkers()[pos]->info();
-                    string input_str;
                     cin >> input_str;
                     if (input_str == "yes") h.removeWorker(pos);
                 }
@@ -71,7 +100,31 @@ int main() {
                 cin >> input;
                 if (input == 0) break;
                 else if (input == 1){
+                    cout << "1 - Filter new Clients    2 - Sort Workers by wage    3 - Search Workers by Wage" << endl;
+                    cout << "4 - Sort Workers by Role    5 - Search Workers by Role" << endl;
+                    cin >> input;
+                    if (input == 1){
 
+
+
+                    }
+                    else if (input == 2){
+                        h.sortbyWage();
+                    }
+                    else if (input == 3){
+                        cout << "Enter the desired wage: " << endl;
+                        cin >> input;
+                        h.searchbyWage(input);
+                    }
+                    else if (input == 4){
+                        h.sortbyRole();
+                    }
+                    else if (input == 5){
+                        cout << "Enter the desired Role: " << endl;
+                        cin >> input_str;
+                        h.searchbyRole(input_str);
+                    }
+                    else cout << "Invalid input" << endl;
                 }
                 else if (input == 2){
                     cout << "1 - Providers    2 - Products    0 - Go back" << endl;

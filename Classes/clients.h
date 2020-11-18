@@ -19,6 +19,12 @@ public:
     virtual void info(ostream &o) const;
 };
 
+class ClientDoesNotExist {
+    string name;
+public:
+    ClientDoesNotExist(string n) {name = n;}
+    string getName() {return name;}
+};
 
 #endif //PROJETO_AEDA_CLIENTS_H
 

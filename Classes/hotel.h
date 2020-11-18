@@ -35,9 +35,12 @@ public:
     void searchbyWage(int w);
     void sortbyRole();
     void sortbyWage();
-    void addClient();
-    void removeClient();
+    void addClient(Clients *c);
+    void removeClient(int pos);
+    vector<Clients *> getClients();
+    int getClientspos(string name) const;
     void sortClients();
+    void listClients();
     int getTotalProducts() const;
     int getTotalWorkers() const;
     int getIncome() const;

@@ -37,16 +37,11 @@ void hotel::removeProduct(int pos) {
 
 void hotel::searchbyRole(string r) {
     if (!workers.empty()) {
-        vector<Worker *> temp;
         for (vector<Worker *>::iterator it = workers.begin(); it != workers.end(); it++) {
             if ((*it)->getRole() == r) {
-                temp.push_back(*it);
+                (*it)->info();
             }
         }
-        for (int i = 0; i != temp.size(); i++){
-            temp[i]->info();
-        }
-        temp.clear();
     }
 }
 
@@ -185,6 +180,36 @@ void hotel::listProducts() {
                 cout << providers[i]->getName() << "    ";
                 providers[i]->getProducts()[j]->info();
             }
+        }
+    }
+}
+
+void hotel::addClient(Clients *c) {
+    clients.push_back(c);
+}
+
+void hotel::removeClient(int pos) {
+    clients.erase(clients.begin() + pos);
+}
+
+vector<Clients *> hotel::getClients() {
+    return clients;
+}
+
+int hotel::getClientspos(string name) const {
+    for(int i = 0; i != clients.size(); i++){
+        if(clients[i]->getName() == name){
+            return i;
+        }
+    }
+    throw ClientDoesNotExist(name);
+}
+
+void hotel::listClients() {
+    if (clients.empty()) cout << "No clients" << endl;
+    else{
+        for(vector<Clients *>::iterator it = clients.begin(); it != clients.end(); it++){
+            (*it)->info();
         }
     }
 }

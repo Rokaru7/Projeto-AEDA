@@ -19,7 +19,7 @@ int Product::getQuality() const {
 }
 
 void Product::info() const {
-    cout << "Type: " << type << "    Price: " << price << "    Quality:" << quality << endl;
+    cout << "Type: " << type << "    Price: " << price << "    Quality: " << quality << endl;
 }
 
 vector<Product *> Provider::getProducts() {
