@@ -6,15 +6,13 @@ using namespace std;
 class Clients {
 protected:
     string name;
-    int NIF;
-    int history;
-    int reservations;
+    int NIF, history, reservations;
     int room;
 public:
     Clients(string n, int N, int h, int r, int R);
-    int getNIF() const ;
+    int getNIF() const;
     string getName() const;
-    int getHistory() const ;
+    int getHistory() const;
     int getReservation() const;
     int getRoomNumber() const;
 };
