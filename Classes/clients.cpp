@@ -51,6 +51,3 @@ void Clients::addRoom(Room *r) {
     rooms.push_back(r);
 }
 
-int Clients::getNroom() {
-    return nroom;
-}
