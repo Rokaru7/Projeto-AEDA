@@ -213,3 +213,64 @@ void hotel::listClients() {
         }
     }
 }
+
+void hotel::filterClients() {
+    if (clients.empty()) cout << "No clients" << endl;
+    else{
+        for(vector<Clients *>::iterator it = clients.begin(); it != clients.end(); it++){
+            if((*it)->getHistory() != 0){
+                (*it)->info();
+            }
+        }
+    }
+}
+
+void hotel::addRoom(Room *r) {
+    rooms.push_back(r);
+}
+
+int hotel::getRoompos(int f, int n) {
+    for(int i = 0; i != rooms.size(); i++){
+        if(rooms[i]->getFloor() == f && rooms[i]->getNumber() == n){
+            return i;
+        }
+    }
+    return 0;
+}
+
+void hotel::removeRoom(int pos) {
+    if (rooms[pos]->getFree()){
+        rooms.erase(rooms.begin() + pos);
+    }
+    else cout << "Room is occupied, so cant be removed" << endl;
+}
+
+vector<Room *> hotel::getRooms() {
+    return rooms;
+}
+
+void hotel::listRooms() {
+    if (rooms.empty()) cout << "No clients" << endl;
+    else{
+        for(vector<Room *>::iterator it = rooms.begin(); it != rooms.end(); it++){
+            (*it)->info();
+        }
+    }
+}
+
+void hotel::listfreeRooms() {
+    if (rooms.empty()) cout << "No clients" << endl;
+    else{
+        for(vector<Room *>::iterator it = rooms.begin(); it != rooms.end(); it++){
+            if ((*it)->getFree()) (*it)->info();
+        }
+    }
+}
+
+void hotel::addIncome(int n) {
+    income += n;
+}
+
+void hotel::removeIncome(int n) {
+    income -= n;
+}

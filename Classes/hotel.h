@@ -14,6 +14,7 @@ class hotel {
     vector<Provider *> providers;
     vector<Product *> boughtproducts;
     vector<Clients *> clients;
+    vector<Room *> rooms;
     int totalproducts = 0;
     int totalworkers = 0;
     int income = 0;
@@ -39,17 +40,23 @@ public:
     void removeClient(int pos);
     vector<Clients *> getClients();
     int getClientspos(string name) const;
-    void sortClients();
+    void filterClients();
     void listClients();
+    void addRoom(Room *r);
+    void removeRoom(int pos);
+    int getRoompos(int f, int n);
+    void addIncome(int n);
+    void removeIncome(int n);
+    vector<Room *> getRooms();
+    void listRooms();
+    void listfreeRooms();
     int getTotalProducts() const;
     int getTotalWorkers() const;
     int getIncome() const;
 
 
     /*
-    -pesquisar funcionarios por cargo e salario
     -filtrar reservas feitas por clientes novos
-    -custos e lucro total de funcionamento do hotel
     */
 };
 

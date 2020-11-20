@@ -5,7 +5,7 @@
 int main() {
     hotel h;
     string name, shift;
-    int NIF, wage, years, floor, evaluation, price, quality, guests;
+    int NIF, wage, years, floor, evaluation, price, quality, guests, number, capacity;
 
     while(true){
         int input;
@@ -21,7 +21,7 @@ int main() {
                 else if (input == 1){
                     cout << "Name    NIF    Number of guests" << endl;
                     cin >> name >> NIF >> guests;
-                    Clients *c = new Clients(name, NIF, 0, guests, 0);
+                    Clients *c = new Clients(name, NIF, 0, guests);
                     h.addClient(c);
                 }
                 else if (input == 2){
@@ -40,9 +40,81 @@ int main() {
             }
         }
         else if (input == 2){
-
-
-
+            while (true){
+                cout << "1 - Add Room    2 - Remove Room    3 - List free rooms    4 - List all rooms    0 - Go back" << endl;
+                cout << "5 - Enter Room    6 - Leave Room" << endl;
+                cin >> input;
+                if (input == 0) break;
+                else if (input == 1){
+                    cout << "Type of the room (suite, withview, withoutview): " << endl;
+                    cin >> name;
+                    if (name != "suite" && name != "withview" && name != "withoutview"){
+                        cout << "Invalid type" << endl;
+                        break;
+                    }
+                    cout << "Floor   Number of the room   Capacity   Price" << endl;
+                    cin >> floor >> number >> capacity >> price;
+                    Room *r = new Room(name, floor, number, price, capacity);
+                    h.addRoom(r);
+                }
+                else if (input == 2){
+                    cout << "Floor   Number" << endl;
+                    cin >> floor >> number;
+                    int pos = h.getRoompos(floor, number);
+                    cout << "Are you sure u want to remove (yes or no) :" << endl;
+                    h.getRooms()[pos]->info();
+                    cin >> input_str;
+                    if (input_str == "yes") h.removeRoom(pos);
+                }
+                else if (input == 3){
+                    h.listfreeRooms();
+                }
+                else if (input == 4){
+                    h.listRooms();
+                }
+                else if (input == 5){
+                    cout << "Name of the Client: " << endl;
+                    cin >> name;
+                    int pos_cl = h.getClientspos(name);
+                    cout << "Number of Rooms: " << endl;
+                    int it;
+                    cin >> it;
+                    vector<int> positions;
+                    int totalspots = 0;
+                    for (int i = 0; i != it; i++){
+                        cout << "Floor   Number of the room" << endl;
+                        cin >> floor >> number;
+                        int pos = h.getRoompos(floor, number);
+                        if (!h.getRooms()[pos]->getFree()) {
+                            cout << "Room is occupied" << endl;
+                            break;
+                        }
+                        positions.push_back(pos);
+                        totalspots += h.getRooms()[pos]->getCapacity();
+                    }
+                    if (totalspots >= h.getClients()[pos_cl]->getReservation()){
+                        for (int i = 0; i != positions.size(); i++){
+                            h.getRooms()[positions[i]]->enter();
+                            h.getClients()[pos_cl]->addRoom(h.getRooms()[positions[i]]);
+                            h.addIncome(h.getRooms()[positions[i]]->getPrice());
+                        }
+                    }
+                    else {
+                        cout << "Not enought capacity for all guests" << endl;
+                        continue;
+                    }
+                }
+                else if (input == 6){
+                    cout << "Name of the Client: " << endl;
+                    cin >> name;
+                    int pos_cl = h.getClientspos(name);
+                    for (int i = 0; i != h.getClients()[pos_cl]->getRooms().size(); i++){
+                        h.getClients()[pos_cl]->getRooms()[i]->leave();
+                        h.removeIncome(h.getClients()[pos_cl]->getRooms()[i]->getPrice());
+                    }
+                }
+                else cout << "Invalid input" << endl;
+            }
         }
         else if (input == 3){
             while(true){
@@ -104,9 +176,7 @@ int main() {
                     cout << "4 - Sort Workers by Role    5 - Search Workers by Role" << endl;
                     cin >> input;
                     if (input == 1){
-
-
-
+                        h.filterClients();
                     }
                     else if (input == 2){
                         h.sortbyWage();
