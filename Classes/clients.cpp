@@ -28,7 +28,7 @@ int Clients::getReservation() const
 
 void Clients::info(ostream &o) {
     o << "Name: " << name << "  NIF: " << NIF << "  Previous reservations: " << history;
-    o << " Number of guests: " << reservations << "  Number(s) of the room(s): " << endl;
+    o << "  Number of guests: " << reservations << "  Number(s) of the room(s): "  << nroom << endl;
     inforooms(cout);
     o << endl;
 }
@@ -47,8 +47,10 @@ void Clients::inforooms(ostream &o) {
 }
 
 void Clients::addRoom(Room *r) {
+    nroom += 1;
     rooms.push_back(r);
 }
 
-/*if reservations<= //lugares disponiveis
-    lugares disponiveis - reservations*/
+int Clients::getNroom() {
+    return nroom;
+}

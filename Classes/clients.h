@@ -8,6 +8,7 @@ using namespace std;
 class Clients {
     string name;
     int NIF, history, reservations;
+    int nroom = 0;
     vector<Room *> rooms;
 public:
     Clients(string name, int NIF, int history, int R);
@@ -16,6 +17,7 @@ public:
     int getHistory() const;
     int getReservation() const;
     void addRoom(Room *r);
+    int getNroom();
     vector<Room *> getRooms() const;
     void inforooms(ostream &o);
     virtual void info();

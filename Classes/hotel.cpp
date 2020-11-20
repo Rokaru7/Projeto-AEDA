@@ -1,27 +1,84 @@
 #include <iostream>
+#include <fstream>
+#include <iostream>
 #include <algorithm>
 #include "hotel.h"
 
-void hotel::addWorker(Worker *w) {
+void hotel::addWorker(Worker *w, bool write) {
     totalworkers += w->getWage();
     workers.push_back(w);
+    if (write){
+        ofstream data;
+        data.open ("data.txt", fstream::app);
+        data << w->getRole() << " " << w->getName() << " " << w->getNIF() << " " << w->getWage() << " " << w->getYears();
+        if (w->getRole() == "Cleaning"){
+            data << " " << w->getShift() << endl;
+        }
+        else if (w->getRole() == "Responsible"){
+            data << " " << w->getFloor() << endl;
+        }
+        else if (w->getRole() == "Manager"){
+            data << " " << w->getEvaluation() << endl;
+        }
+        data.close();
+    }
 }
 
 vector<Worker *> hotel::getWorkers() {
     return workers;
 }
 
+void hotel::eraseLine(string eraseLine) {
+    string path = "data.txt";
+    string line;
+    ifstream data;
+    data.open("data.txt");
+    ofstream temp;
+    temp.open("temp.txt");
+
+    while (getline(data, line)) {
+        if (line != eraseLine)
+            temp << line << std::endl;
+    }
+
+    temp.close();
+    data.close();
+
+    remove("data.txt");
+    rename("temp.txt", "data.txt");
+}
+
 void hotel::removeWorker(int pos) {
+    string eraseline = workers[pos]->getRole() + " " + workers[pos]->getName() + " " + to_string(workers[pos]->getNIF()) + " " + to_string(workers[pos]->getWage()) + " " + to_string(workers[pos]->getYears());
+    if (workers[pos]->getRole() == "Cleaning") eraseline += " " + workers[pos]->getShift();
+    else if (workers[pos]->getRole() == "Responsible") eraseline += " " + to_string(workers[pos]->getFloor());
+    else if (workers[pos]->getRole() == "Manager") eraseline += " " + to_string(workers[pos]->getEvaluation());
+    eraseLine(eraseline);
+
     totalworkers -= workers[pos]->getWage();
     workers.erase(workers.begin() + pos);
 }
 
-void hotel::addProvider(Provider *p) {
+void hotel::addProvider(Provider *p, bool w) {
     providers.push_back(p);
+    if (w){
+        ofstream data;
+        data.open ("data.txt", fstream::app);
+        data << "Provider " << p->getName() << endl;
+        data.close();
+    }
 }
 
 void hotel::removeProvider(int pos) {
+    string eraseline = "Provider " + providers[pos]->getName();
+    eraseLine(eraseline);
+    for (int i = 0; i != providers[pos]->getProducts().size(); i++){
+        eraseline = "Product " + providers[pos]->getName() + " " + providers[pos]->getProducts()[i]->getType() + " " + to_string(providers[pos]->getProducts()[i]->getPrice()) + " " + to_string(providers[pos]->getProducts()[i]->getQuality());
+        eraseLine(eraseline);
+    }
+    providers[pos]->getProducts().clear();
     providers.erase(providers.begin() + pos);
+
 }
 
 
@@ -184,11 +241,20 @@ void hotel::listProducts() {
     }
 }
 
-void hotel::addClient(Clients *c) {
+void hotel::addClient(Clients *c, bool w) {
     clients.push_back(c);
+    if (w){
+        ofstream data;
+        data.open ("data.txt", fstream::app);
+        data << "Client " << c->getName() << " " << c->getNIF() << " " << c->getHistory() << " " << c->getReservation() << endl;
+        data.close();
+    }
 }
 
 void hotel::removeClient(int pos) {
+    string eraseline = "Client " + clients[pos]->getName() + " " + to_string(clients[pos]->getNIF()) + " " + to_string(clients[pos]->getHistory()) + " " + to_string(clients[pos]->getReservation());
+    eraseLine(eraseline);
+
     clients.erase(clients.begin() + pos);
 }
 
@@ -225,8 +291,14 @@ void hotel::filterClients() {
     }
 }
 
-void hotel::addRoom(Room *r) {
+void hotel::addRoom(Room *r, bool w) {
     rooms.push_back(r);
+    if (w){
+        ofstream data;
+        data.open ("data.txt", fstream::app);
+        data << "Room " << r->getType() << " " << r->getFloor() << " " << r->getNumber() << " " << r->getPrice() << " " << r->getCapacity() << " " << r->getFree() << endl;
+        data.close();
+    }
 }
 
 int hotel::getRoompos(int f, int n) {
@@ -240,6 +312,8 @@ int hotel::getRoompos(int f, int n) {
 
 void hotel::removeRoom(int pos) {
     if (rooms[pos]->getFree()){
+        string eraseline = "Room " + rooms[pos]->getType() + " " + to_string(rooms[pos]->getFloor()) + " " + to_string(rooms[pos]->getNumber()) + " " + to_string(rooms[pos]->getPrice()) + " " + to_string(rooms[pos]->getCapacity()) + " " + to_string(rooms[pos]->getFree());
+        eraseLine(eraseline);
         rooms.erase(rooms.begin() + pos);
     }
     else cout << "Room is occupied, so cant be removed" << endl;
@@ -274,3 +348,5 @@ void hotel::addIncome(int n) {
 void hotel::removeIncome(int n) {
     income -= n;
 }
+
+

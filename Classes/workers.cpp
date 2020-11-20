@@ -46,10 +46,6 @@ Responsible::Responsible(string n, int N, int w, int y, int f) : Worker(n, N, w,
     floor = f;
 }
 
-int Responsible::getFloor() const {
-    return floor;
-}
-
 void Responsible::info() const {
     return Responsible::info(cout);
 }
@@ -64,9 +60,9 @@ Cleaning::Cleaning(string n, int N, int w, int y, string s) : Worker(n, N, w, y)
     shift = s;
 }
 
-string Cleaning::getShift() const {
+/*string Cleaning::getShift() const {
     return shift;
-}
+}*/
 
 void Cleaning::info() const {
     return Cleaning::info(cout);
@@ -82,10 +78,6 @@ void Cleaning::info(ostream &o) const {
 
 Manager::Manager(string n, int N, int w, int y, int e) : Worker(n, N, w, y) {
     evaluation = e;
-}
-
-int Manager::getEvaluation() const {
-    return evaluation;
 }
 
 void Manager::info() const {

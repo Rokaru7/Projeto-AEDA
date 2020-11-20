@@ -1,11 +1,119 @@
 #include <iostream>
+#include <fstream>
 #include "Classes/hotel.h"
 
 
 int main() {
     hotel h;
-    string name, shift;
+    string name, shift, type;
     int NIF, wage, years, floor, evaluation, price, quality, guests, number, capacity;
+    bool free;
+
+    ifstream data("data.txt");
+    string word;
+    while ( data >> word ){
+        if (word == "Client"){
+            for (int i = 0; i != 4; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) NIF = stoi(word);
+                else if (i == 2) years = stoi(word);
+                else guests = stoi(word);
+            }
+            Clients *c = new Clients(name, NIF, years, guests);
+            h.addClient(c, false);
+        }
+        else if (word == "Room"){
+            for (int i = 0; i != 6; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) floor = stoi(word);
+                else if (i == 2) number = stoi(word);
+                else if (i == 3) price = stoi(word);
+                else if (i == 4) capacity = stoi(word);
+                else free = stoi(word);
+            }
+            Room *r = new Room(name, floor, number, price, capacity, free);
+            h.addRoom(r, false);
+        }
+        else if (word == "Cleaning"){
+            for (int i = 0; i != 5; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) NIF = stoi(word);
+                else if (i == 2) wage = stoi(word);
+                else if (i == 3) years = stoi(word);
+                else shift = word;
+            }
+            Cleaning *c = new Cleaning(name, NIF, wage, years, shift);
+            h.addWorker(c, false);
+        }
+        else if (word == "Reception"){
+            for (int i = 0; i != 4; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) NIF = stoi(word);
+                else if (i == 2) wage = stoi(word);
+                else years = stoi(word);
+            }
+            Reception *r = new Reception(name, NIF, wage, years);
+            h.addWorker(r, false);
+        }
+        else if (word == "Responsible"){
+            for (int i = 0; i != 5; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) NIF = stoi(word);
+                else if (i == 2) wage = stoi(word);
+                else if (i == 3) years = stoi(word);
+                else floor = stoi(word);
+            }
+            Responsible *r1 = new Responsible(name, NIF, wage, years, floor);
+            h.addWorker(r1, false);
+        }
+        else if (word == "Manager"){
+            for (int i = 0; i != 5; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) NIF = stoi(word);
+                else if (i == 2) wage = stoi(word);
+                else if (i == 3) years = stoi(word);
+                else evaluation = stoi(word);
+            }
+            Manager *m = new Manager(name, NIF, wage, years, evaluation);
+            h.addWorker(m, false);
+        }
+        else if (word == "Provider"){
+            data >> word;
+            name = word;
+            Provider *P = new Provider(name);
+            h.addProvider(P, false);
+        }
+        else if (word == "Product"){
+            for (int i = 0; i != 4; i++){
+                data >> word;
+                if (i == 0) name = word;
+                else if (i == 1) type = word;
+                else if (i == 2) price = stoi(word);
+                else if (i == 3) quality = stoi(word);
+            }
+            Product *p = new Product(type, price, quality);
+            h.getProviders()[h.getProviderpos(name)]->addProduct(p, false);
+        }
+        else {
+            name = word;
+            data >> word;
+            floor = stoi(word);
+            data >> word;
+            number = stoi(word);
+            int pos_cl = h.getClientspos(name);
+            int pos = h.getRoompos(floor, number);
+            h.getRooms()[pos]->enter();
+            h.getClients()[pos_cl]->addRoom(h.getRooms()[pos]);
+            h.addIncome(h.getRooms()[pos]->getPrice());
+        }
+    }
+    data.close();
 
     while(true){
         int input;
@@ -22,7 +130,7 @@ int main() {
                     cout << "Name    NIF    Number of guests" << endl;
                     cin >> name >> NIF >> guests;
                     Clients *c = new Clients(name, NIF, 0, guests);
-                    h.addClient(c);
+                    h.addClient(c, true);
                 }
                 else if (input == 2){
                     cout << "Name: " << endl;
@@ -54,8 +162,8 @@ int main() {
                     }
                     cout << "Floor   Number of the room   Capacity   Price" << endl;
                     cin >> floor >> number >> capacity >> price;
-                    Room *r = new Room(name, floor, number, price, capacity);
-                    h.addRoom(r);
+                    Room *r = new Room(name, floor, number, price, capacity, true);
+                    h.addRoom(r, true);
                 }
                 else if (input == 2){
                     cout << "Floor   Number" << endl;
@@ -94,6 +202,12 @@ int main() {
                     }
                     if (totalspots >= h.getClients()[pos_cl]->getReservation()){
                         for (int i = 0; i != positions.size(); i++){
+
+                            ofstream data;
+                            data.open ("data.txt", fstream::app);
+                            data << h.getClients()[pos_cl]->getName() << " " << floor << " " << number << endl;
+                            data.close();
+
                             h.getRooms()[positions[i]]->enter();
                             h.getClients()[pos_cl]->addRoom(h.getRooms()[positions[i]]);
                             h.addIncome(h.getRooms()[positions[i]]->getPrice());
@@ -109,6 +223,7 @@ int main() {
                     cin >> name;
                     int pos_cl = h.getClientspos(name);
                     for (int i = 0; i != h.getClients()[pos_cl]->getRooms().size(); i++){
+                        h.eraseLine((name + " " + to_string(h.getClients()[pos_cl]->getRooms()[i]->getFloor()) + " " + to_string(h.getClients()[pos_cl]->getRooms()[i]->getNumber())));
                         h.getClients()[pos_cl]->getRooms()[i]->leave();
                         h.removeIncome(h.getClients()[pos_cl]->getRooms()[i]->getPrice());
                     }
@@ -130,25 +245,25 @@ int main() {
                             cout << "Name    NIF    Wage    Years of service    Shift" << endl;
                             cin >> name >> NIF >> wage >> years >> shift;
                             Cleaning *c = new Cleaning(name, NIF, wage, years, shift);
-                            h.addWorker(c);
+                            h.addWorker(c, true);
                         }
                         else if (input == 2){
                             cout << "Name    NIF    Wage    Years of service    Evaluation" << endl;
                             cin >> name >> NIF >> wage >> years >> evaluation;
                             Manager *m = new Manager(name, NIF, wage, years, evaluation);
-                            h.addWorker(m);
+                            h.addWorker(m, true);
                         }
                         else if (input == 3){
                             cout << "Name    NIF    Wage    Years of service" << endl;
                             cin >> name >> NIF >> wage >> years;
                             Reception *r = new Reception(name, NIF, wage, years);
-                            h.addWorker(r);
+                            h.addWorker(r, true);
                         }
                         else if (input == 4){
                             cout << "Name    NIF    Wage    Years of service    Shift" << endl;
                             cin >> name >> NIF >> wage >> years >> floor;
                             Responsible *r1 = new Responsible(name, NIF, wage, years, floor);
-                            h.addWorker(r1);
+                            h.addWorker(r1, true);
                         }
                         else cout << "Invalid input" << endl;
                     }
@@ -208,7 +323,7 @@ int main() {
                             cout << "Name of the provider: " << endl;
                             cin >> name;
                             Provider *p = new Provider(name);
-                            h.addProvider(p);
+                            h.addProvider(p, true);
                         }
                         else if (input == 2){
                             cout << "Name: " << endl;
@@ -235,7 +350,7 @@ int main() {
                             cout << "Type of the Product    Price    Quality" << endl;
                             cin >> name >> price >> quality;
                             Product *p1 = new Product(name, price, quality);
-                            h.getProviders()[pos]->addProduct(p1);
+                            h.getProviders()[pos]->addProduct(p1, true);
                         }
                         else if (input == 2){
                             cout << "Name of the provider: " << endl;

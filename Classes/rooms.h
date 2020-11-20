@@ -10,7 +10,7 @@ class Room {
     int number, floor, price, capacity;
     bool free = true;
 public:
-    Room(string t, int f, int n, int p, int c);
+    Room(string t, int f, int n, int p, int c, bool fr);
     string getType();
     int getNumber();
     int getFloor();

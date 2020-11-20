@@ -2,8 +2,8 @@
 #include <iostream>
 #include "rooms.h"
 
-Room::Room(string t, int f, int n, int p, int c) {
-    type = t; number = n; free = true; floor = f; price = p; capacity = c;
+Room::Room(string t, int f, int n, int p, int c, bool fr) {
+    type = t; number = n; free = fr; floor = f; price = p; capacity = c;
 }
 
 string Room::getType() {

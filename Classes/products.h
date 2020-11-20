@@ -29,7 +29,7 @@ public:
     Provider(string n);
     string getName() const;
     vector<Product *> getProducts();
-    void addProduct(Product *p);
+    void addProduct(Product *p, bool w);
     void removeProduct(int pos);
     int getProductpos(string n);
 };

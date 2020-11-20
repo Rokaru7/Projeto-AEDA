@@ -1,6 +1,7 @@
 
 #include "products.h"
 #include <iostream>
+#include <fstream>
 
 Product::Product(string t, int p, int q) {
     type = t; price = p; quality = q;
@@ -26,8 +27,14 @@ vector<Product *> Provider::getProducts() {
     return products;
 }
 
-void Provider::addProduct(Product *p) {
+void Provider::addProduct(Product *p, bool w) {
     products.push_back(p);
+    if (w){
+        ofstream data;
+        data.open ("data.txt", fstream::app);
+        data << "Product " << name << " " << p->getType() << " " << p->getPrice() << " " << p->getQuality() << endl;
+        data.close();
+    }
 }
 
 void Provider::removeProduct(int pos) {

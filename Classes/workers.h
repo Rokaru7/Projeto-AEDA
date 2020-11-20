@@ -13,6 +13,9 @@ public:
     Worker(string n, int N, int w, int y);
     virtual ~Worker(){};
     virtual string getRole() {return "";};
+    virtual string getShift() {return "";}
+    virtual int getFloor() {return 0;}
+    virtual int getEvaluation() {return 0;}
     string getName() const;
     int getNIF() const;
     int getWage() const;
@@ -34,7 +37,7 @@ class Responsible: public Worker {
 public:
     Responsible(string n, int N, int w, int y, int f);
     string getRole() {return "Responsible";}
-    int getFloor() const;
+    int getFloor()  {return floor;};
     void info() const;
     void info(ostream &o) const;
 };
@@ -44,7 +47,7 @@ class Cleaning: public Worker {
 public:
     Cleaning(string n, int N, int w, int y, string s);
     string getRole() {return "Cleaning";}
-    string getShift() const;
+    string getShift() {return shift;};
     void info() const;
     void info(ostream &o) const;
 };
@@ -54,7 +57,7 @@ class Manager: public Worker {
 public:
     Manager(string n, int N, int w, int y, int e);
     string getRole() {return "Manager";}
-    int getEvaluation() const;
+    int getEvaluation() {return evaluation;};
     void info() const;
     void info(ostream &o) const;
 };

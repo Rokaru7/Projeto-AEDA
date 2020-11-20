@@ -19,11 +19,11 @@ class hotel {
     int totalworkers = 0;
     int income = 0;
 public:
-    void addWorker(Worker *w);
+    void addWorker(Worker *w, bool write);
     void removeWorker(int pos);
     vector<Worker *> getWorkers();
     int getWorkerpos(string name) const;
-    void addProvider(Provider *p);
+    void addProvider(Provider *p, bool w);
     void removeProvider(int pos);
     int getProviderpos(string name) const;
     void listProviders();
@@ -36,13 +36,13 @@ public:
     void searchbyWage(int w);
     void sortbyRole();
     void sortbyWage();
-    void addClient(Clients *c);
+    void addClient(Clients *c, bool w);
     void removeClient(int pos);
     vector<Clients *> getClients();
     int getClientspos(string name) const;
     void filterClients();
     void listClients();
-    void addRoom(Room *r);
+    void addRoom(Room *r, bool w);
     void removeRoom(int pos);
     int getRoompos(int f, int n);
     void addIncome(int n);
@@ -53,6 +53,7 @@ public:
     int getTotalProducts() const;
     int getTotalWorkers() const;
     int getIncome() const;
+    void eraseLine(string eraseLine);
 
 
     /*
